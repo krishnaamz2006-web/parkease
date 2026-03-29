@@ -157,40 +157,32 @@ select {
 
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
 
-  document.getElementById("duration").addEventListener("change", function() {
-    let value = Number(this.value);
-    let price = (value / 3600) * 30;
+// ✅ LOGIN FUNCTION (GLOBAL)
+function login() {
+  let user = document.getElementById("username").value;
+  let pass = document.getElementById("password").value;
 
-    if (value < 3600) {
-      document.getElementById("price").innerText = "Demo Mode";
-    } else {
-      document.getElementById("price").innerText = "Price: ₹" + price;
-    }
-  });
-
-  function login() {
-    let user = document.getElementById("username").value;
-    let pass = document.getElementById("password").value;
-
-    if (user === "admin" && pass === "1234") {
-      document.getElementById("login").style.display = "none";
-      document.getElementById("main").style.display = "block";
-      updateCount();
-    } else {
-      alert("Invalid username or password");
-    }
+  if (user === "admin" && pass === "1234") {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("main").style.display = "block";
+    updateCount();
+  } else {
+    alert("Invalid username or password");
   }
+}
 
-  function updateCount() {
-    let total = document.querySelectorAll('.slot').length;
-    let reserved = document.querySelectorAll('.reserved').length;
-    document.getElementById("count").innerText =
-      "Available Slots: " + (total - reserved);
-  }
+// ✅ UPDATE COUNT
+function updateCount() {
+  let total = document.querySelectorAll('.slot').length;
+  let reserved = document.querySelectorAll('.reserved').length;
+  document.getElementById("count").innerText =
+    "Available Slots: " + (total - reserved);
+}
+
+// ✅ RESERVE FUNCTION
 function reserve(slot) {
-  let originalName = slot.innerText;
+  let originalName = slot.innerText; // FIXED
   let duration = Number(document.getElementById("duration").value);
 
   if (!slot.classList.contains("reserved")) {
@@ -198,53 +190,19 @@ function reserve(slot) {
 
     let price = (duration / 3600) * 30;
 
-    if (duration < 3600) {
-      alert("Reserved (Demo Mode)");
-    } else {
-      alert("Slot " + slot.innerText + " reserved for ₹" + price);
-    }
+    alert("Slot " + originalName + " reserved");
 
     updateCount();
-
-    let timeLeft = duration;
-
-    let interval = setInterval(() => {
-  timeLeft--;
-
-  let hours = Math.floor(timeLeft / 3600);
-  let minutes = Math.floor((timeLeft % 3600) / 60);
-  let seconds = timeLeft % 60;
-
-  slot.innerText = `⏱ ${hours}h ${minutes}m ${seconds}s`;
-
-  if (timeLeft <= 0) {
-    clearInterval(interval);
-    slot.classList.remove("reserved");
-    slot.innerText = originalName;
-    alert(originalName + " is now available again!");
-    updateCount();
-  }
-}, 1000);
-
   } else {
     alert("Already Reserved!");
   }
 }
 
-  // make functions work with onclick
-  window.login = login;
-  window.reserve = reserve;
-
-  // run once on load
-  document.getElementById("duration").dispatchEvent(new Event("change"));
-document.getElementById("duration").dispatchEvent(new Event("change"));
-
-// 👇 ADD HERE
+// ✅ FETCH BACKEND DATA
 function fetchData() {
   fetch("http://127.0.0.1:5000/data")
     .then(res => res.json())
     .then(data => {
-
       document.querySelectorAll(".slot").forEach(slot => {
         let id = slot.getAttribute("data-id");
 
@@ -256,14 +214,21 @@ function fetchData() {
       });
 
       updateCount();
-    });
+    })
+    .catch(err => console.log(err));
 }
 
-// run every 2 seconds
-setInterval(fetchData, 2000);
+// ✅ RUN EVERYTHING AFTER PAGE LOAD
+window.onload = function() {
+  document.getElementById("duration").addEventListener("change", function() {
+    let value = Number(this.value);
+    let price = (value / 3600) * 30;
+    document.getElementById("price").innerText = "Price: ₹" + price;
+  });
 
-});
+  setInterval(fetchData, 2000);
+};
+
 </script>
-
 </body>
 </html>
