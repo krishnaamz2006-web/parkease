@@ -149,10 +149,10 @@ select {
   </div>
 
   <div class="parking-grid">
-    <div class="slot" onclick="reserve(this)">P1</div>
-    <div class="slot" onclick="reserve(this)">P2</div>
-    <div class="slot" onclick="reserve(this)">P3</div>
-    <div class="slot" onclick="reserve(this)">P4</div>
+    <div class="slot" data-id="P1" onclick="reserve(this)">P1</div>
+    <div class="slot" data-id="P2" onclick="reserve(this)">P2</div>
+    <div class="slot" data-id="P3" onclick="reserve(this)">P3</div>
+    <div class="slot" data-id="P4" onclick="reserve(this)">P4</div>
   </div>
 
 </div>
@@ -190,6 +190,7 @@ document.addEventListener("DOMContentLoaded", function() {
       "Available Slots: " + (total - reserved);
   }
 function reserve(slot) {
+  let originalName = slot.innerText;
   let duration = Number(document.getElementById("duration").value);
 
   if (!slot.classList.contains("reserved")) {
@@ -261,7 +262,6 @@ function fetchData() {
 // run every 2 seconds
 setInterval(fetchData, 2000);
 
-});
 });
 </script>
 
