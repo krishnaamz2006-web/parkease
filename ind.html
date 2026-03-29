@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Park Ease</title>
+  <style>
+    body {
+  font-family: Arial;
+  text-align: center;
+  background: linear-gradient(to right, #667eea, #764ba2);
+  color: white;
+}
+
+/* Login Box */
+#login {
+  background: white;
+  color: black;
+  width: 300px;
+  margin: 100px auto;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+#login h2 {
+  margin-bottom: 20px;
+}
+
+#login input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+#login button {
+  width: 100%;
+  padding: 10px;
+  background: #667eea;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#login button:hover {
+  background: #5a67d8;
+}
+
+/* Parking slots */
+.slot {
+  width: 80px;
+  height: 80px;
+  background: green;
+  margin: 10px;
+  display: inline-block;
+  line-height: 80px;
+  color: white;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.slot:hover {
+  transform: scale(1.1);
+}
+
+.reserved {
+  background: red;
+}
+/* Card */
+.card {
+  background: white;
+  color: black;
+  width: 300px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Dropdown */
+select {
+  width: 90%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+/* Parking grid */
+.parking-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 100px);
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Slot upgrade */
+.slot {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #28a745, #218838);
+  line-height: 100px;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.slot:hover {
+  transform: scale(1.15);
+}
+
+/* Reserved */
+.reserved {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+}
+  </style>
+</head>
+
+<body>
+
+<!-- 🔐 LOGIN -->
+<div id="login">
+  <h2>🚗 Park Ease Login</h2>
+  <input type="text" id="username" placeholder="Enter Username"><br><br>
+  <input type="password" id="password" placeholder="Enter Password"><br><br>
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- 🚗 MAIN APP -->
+<div id="main" style="display:none;">
+
+  <h1>🚗 Park Ease</h1>
+
+  <div class="card">
+    <p id="count"></p>
+
+    <label>Select Duration</label><br><br>
+
+<select id="duration">
+  <option value="7200">2 hours - ₹60</option>
+  <option value="14400">4 hours - ₹120</option>
+</select>
+
+    <p id="price"></p>
+  </div>
+
+  <div class="parking-grid">
+    <div class="slot" onclick="reserve(this)">P1</div>
+    <div class="slot" onclick="reserve(this)">P2</div>
+    <div class="slot" onclick="reserve(this)">P3</div>
+    <div class="slot" onclick="reserve(this)">P4</div>
+  </div>
+
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  document.getElementById("duration").addEventListener("change", function() {
+    let value = Number(this.value);
+    let price = (value / 3600) * 30;
+
+    if (value < 3600) {
+      document.getElementById("price").innerText = "Demo Mode";
+    } else {
+      document.getElementById("price").innerText = "Price: ₹" + price;
+    }
+  });
+
+  function login() {
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if (user === "admin" && pass === "1234") {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("main").style.display = "block";
+      updateCount();
+    } else {
+      alert("Invalid username or password");
+    }
+  }
+
+  function updateCount() {
+    let total = document.querySelectorAll('.slot').length;
+    let reserved = document.querySelectorAll('.reserved').length;
+    document.getElementById("count").innerText =
+      "Available Slots: " + (total - reserved);
+  }
+function reserve(slot) {
+  let duration = Number(document.getElementById("duration").value);
+
+  if (!slot.classList.contains("reserved")) {
+    slot.classList.add("reserved");
+
+    let price = (duration / 3600) * 30;
+
+    if (duration < 3600) {
+      alert("Reserved (Demo Mode)");
+    } else {
+      alert("Slot " + slot.innerText + " reserved for ₹" + price);
+    }
+
+    updateCount();
+
+    let timeLeft = duration;
+
+    let interval = setInterval(() => {
+  timeLeft--;
+
+  let hours = Math.floor(timeLeft / 3600);
+  let minutes = Math.floor((timeLeft % 3600) / 60);
+  let seconds = timeLeft % 60;
+
+  slot.innerText = `⏱ ${hours}h ${minutes}m ${seconds}s`;
+
+  if (timeLeft <= 0) {
+    clearInterval(interval);
+    slot.classList.remove("reserved");
+    slot.innerText = originalName;
+    alert(originalName + " is now available again!");
+    updateCount();
+  }
+}, 1000);
+
+  } else {
+    alert("Already Reserved!");
+  }
+}
+
+  // make functions work with onclick
+  window.login = login;
+  window.reserve = reserve;
+
+  // run once on load
+  document.getElementById("duration").dispatchEvent(new Event("change"));
+document.getElementById("duration").dispatchEvent(new Event("change"));
+
+// 👇 ADD HERE
+function fetchData() {
+  fetch("http://127.0.0.1:5000/data")
+    .then(res => res.json())
+    .then(data => {
+
+      document.querySelectorAll(".slot").forEach(slot => {
+        let id = slot.getAttribute("data-id");
+
+        if (data[id] === 1) {
+          slot.classList.add("reserved");
+        } else {
+          slot.classList.remove("reserved");
+        }
+      });
+
+      updateCount();
+    });
+}
+
+// run every 2 seconds
+setInterval(fetchData, 2000);
+
+});
+});
+</script>
+
+</body>
+</html>
