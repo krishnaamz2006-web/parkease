@@ -1,126 +1,134 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Park Ease</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <title>ParkEase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #020617, #0f172a);
-      color: #e2e8f0;
-      text-align: center;
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      border-bottom: 1px solid #1f2937;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    /* MAIN CONTAINER */
+    .container {
+      padding: 40px;
+      max-width: 1000px;
+      margin: auto;
     }
 
     h1 {
-      margin-top: 40px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      margin-bottom: 10px;
+      font-size: 28px;
     }
 
-    /* SUBTLE BACKGROUND GLOW */
-    body::before {
-      content: "";
-      position: fixed;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(56,189,248,0.15), transparent);
-      top: -100px;
-      right: -100px;
-      z-index: -1;
+    .sub {
+      color: #9ca3af;
+      margin-bottom: 30px;
     }
 
-    /* LOGIN */
-    #login {
-      margin-top: 120px;
-    }
-
+    /* CARD */
     .card {
-      background: rgba(255,255,255,0.04);
-      border-radius: 18px;
-      padding: 28px;
-      width: 320px;
-      margin: auto;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      background: #111827;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid #1f2937;
     }
 
-    input, select {
-      width: 90%;
+    select {
+      margin-top: 10px;
       padding: 10px;
-      margin: 10px 0;
       border-radius: 8px;
       border: none;
-      outline: none;
-      background: #0f172a;
+      background: #020617;
       color: white;
     }
 
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      background: #38bdf8;
-      color: black;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #0ea5e9;
-      transform: scale(1.03);
-    }
-
-    /* DASHBOARD */
-    #dashboard {
-      display: none;
-    }
-
-    .info-card {
-      margin: 30px auto;
-      width: 320px;
-    }
-
     /* GRID */
-    .parking-grid {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(2, 130px);
-      gap: 25px;
-      justify-content: center;
-      margin-top: 50px;
+      grid-template-columns: repeat(2, 150px);
+      gap: 20px;
     }
 
     /* SLOT */
     .slot {
-      height: 130px;
-      border-radius: 18px;
+      height: 140px;
+      border-radius: 12px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 18px;
       font-weight: 500;
       cursor: pointer;
       background: #16a34a;
-      transition: 0.25s ease;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transition: 0.2s;
     }
 
     .slot:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      transform: translateY(-2px);
     }
 
     .slot.reserved {
       background: #dc2626;
-      box-shadow: 0 0 15px rgba(220,38,38,0.5);
     }
 
-    label {
-      font-size: 14px;
-      opacity: 0.8;
+    /* LOGIN */
+    #login {
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      background: #111827;
+      padding: 30px;
+      border-radius: 12px;
+      width: 300px;
+      border: 1px solid #1f2937;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #020617;
+      color: white;
+    }
+
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    #dashboard {
+      display: none;
     }
 
   </style>
@@ -130,10 +138,10 @@
 
 <!-- LOGIN -->
 <div id="login">
-  <div class="card">
-    <h2>🚗 Park Ease</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
+  <div class="login-box">
+    <h2>ParkEase</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
     <button onclick="login()">Login</button>
   </div>
 </div>
@@ -141,37 +149,36 @@
 <!-- DASHBOARD -->
 <div id="dashboard">
 
-  <h1>🚗 Park Ease</h1>
+  <div class="navbar">🚗 ParkEase</div>
 
-  <div class="card info-card">
-    <p id="count"></p>
+  <div class="container">
+    <h1>Parking Dashboard</h1>
+    <div class="sub">Manage and reserve parking slots in real-time</div>
 
-    <label>Select Duration</label><br>
+    <div class="card">
+      <div id="count"></div>
 
-    <select id="duration">
-      <option value="7200">2 hours - ₹60</option>
-      <option value="14400">4 hours - ₹120</option>
-    </select>
+      <label>Select Duration</label><br>
 
-    <p id="price"></p>
+      <select id="duration">
+        <option value="7200">2 hours - ₹60</option>
+        <option value="14400">4 hours - ₹120</option>
+      </select>
+
+      <div id="price"></div>
+    </div>
+
+    <div class="grid">
+      <div class="slot" data-id="P1" onclick="reserve(this)">P1</div>
+      <div class="slot" data-id="P2" onclick="reserve(this)">P2</div>
+      <div class="slot" data-id="P3" onclick="reserve(this)">P3</div>
+      <div class="slot" data-id="P4" onclick="reserve(this)">P4</div>
+    </div>
+
   </div>
-
-  <div class="parking-grid">
-    <div class="slot" data-id="P1" onclick="reserve(this)">P1</div>
-    <div class="slot" data-id="P2" onclick="reserve(this)">P2</div>
-    <div class="slot" data-id="P3" onclick="reserve(this)">P3</div>
-    <div class="slot" data-id="P4" onclick="reserve(this)">P4</div>
-  </div>
-
 </div>
 
 <script>
-
-document.getElementById("duration").addEventListener("change", function() {
-  let value = Number(this.value);
-  let price = (value / 3600) * 30;
-  document.getElementById("price").innerText = "Price: ₹" + price;
-});
 
 function login() {
   if (
@@ -181,10 +188,13 @@ function login() {
     document.getElementById("login").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
     updateCount();
-  } else {
-    alert("Invalid login");
   }
 }
+
+document.getElementById("duration").addEventListener("change", function () {
+  let price = (this.value / 3600) * 30;
+  document.getElementById("price").innerText = "Price: ₹" + price;
+});
 
 function updateCount() {
   let total = document.querySelectorAll('.slot').length;
@@ -194,30 +204,8 @@ function updateCount() {
 }
 
 function reserve(slot) {
-  let original = slot.innerText;
-  let duration = Number(document.getElementById("duration").value);
-
   if (!slot.classList.contains("reserved")) {
     slot.classList.add("reserved");
-
-    let timeLeft = duration;
-
-    let interval = setInterval(() => {
-      timeLeft--;
-
-      let m = Math.floor(timeLeft / 60);
-      let s = timeLeft % 60;
-
-      slot.innerText = `${m}m ${s}s`;
-
-      if (timeLeft <= 0) {
-        clearInterval(interval);
-        slot.classList.remove("reserved");
-        slot.innerText = original;
-        updateCount();
-      }
-    }, 1000);
-
     updateCount();
   }
 }
@@ -227,15 +215,10 @@ function fetchData() {
     .then(res => res.json())
     .then(data => {
       document.querySelectorAll(".slot").forEach(slot => {
-        let id = slot.getAttribute("data-id");
-
-        if (data[id] === 1) {
-          slot.classList.add("reserved");
-        } else {
-          slot.classList.remove("reserved");
-        }
+        let id = slot.dataset.id;
+        if (data[id] === 1) slot.classList.add("reserved");
+        else slot.classList.remove("reserved");
       });
-
       updateCount();
     });
 }
