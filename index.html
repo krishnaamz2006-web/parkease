@@ -2,105 +2,125 @@
 <html>
 <head>
   <title>Park Ease</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      color: #e2e8f0;
       text-align: center;
     }
 
     h1 {
-      margin-top: 30px;
+      margin-top: 40px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* SUBTLE BACKGROUND GLOW */
+    body::before {
+      content: "";
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(56,189,248,0.15), transparent);
+      top: -100px;
+      right: -100px;
+      z-index: -1;
     }
 
     /* LOGIN */
     #login {
-      background: rgba(255,255,255,0.08);
-      padding: 30px;
-      border-radius: 15px;
-      width: 300px;
-      margin: 120px auto;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      margin-top: 120px;
     }
 
-    #login input {
+    .card {
+      background: rgba(255,255,255,0.04);
+      border-radius: 18px;
+      padding: 28px;
+      width: 320px;
+      margin: auto;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+
+    input, select {
       width: 90%;
       padding: 10px;
       margin: 10px 0;
       border-radius: 8px;
       border: none;
-    }
-
-    #login button {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #6366f1;
+      outline: none;
+      background: #0f172a;
       color: white;
-      cursor: pointer;
     }
 
-    #login button:hover {
-      background: #4f46e5;
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: #38bdf8;
+      color: black;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0ea5e9;
+      transform: scale(1.03);
     }
 
     /* DASHBOARD */
-    .dashboard {
+    #dashboard {
       display: none;
-      margin-top: 40px;
     }
 
-    .card {
-      background: rgba(255,255,255,0.08);
-      padding: 20px;
-      border-radius: 15px;
-      width: 300px;
-      margin: 20px auto;
-      backdrop-filter: blur(10px);
-    }
-
-    select {
-      padding: 8px;
-      border-radius: 8px;
-      border: none;
+    .info-card {
+      margin: 30px auto;
+      width: 320px;
     }
 
     /* GRID */
     .parking-grid {
       display: grid;
-      grid-template-columns: repeat(2, 120px);
-      gap: 20px;
+      grid-template-columns: repeat(2, 130px);
+      gap: 25px;
       justify-content: center;
-      margin-top: 30px;
+      margin-top: 50px;
     }
 
-    /* SLOTS */
+    /* SLOT */
     .slot {
-      width: 120px;
-      height: 120px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+      height: 130px;
+      border-radius: 18px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-weight: 600;
       font-size: 18px;
+      font-weight: 500;
       cursor: pointer;
-      transition: 0.3s;
+      background: #16a34a;
+      transition: 0.25s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
     }
 
     .slot:hover {
-      transform: scale(1.08);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     }
 
     .slot.reserved {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      background: #dc2626;
+      box-shadow: 0 0 15px rgba(220,38,38,0.5);
+    }
+
+    label {
+      font-size: 14px;
+      opacity: 0.8;
     }
 
   </style>
@@ -110,21 +130,23 @@
 
 <!-- LOGIN -->
 <div id="login">
-  <h2>🚗 Park Ease Login</h2>
-  <input type="text" id="username" placeholder="Enter Username">
-  <input type="password" id="password" placeholder="Enter Password">
-  <button onclick="login()">Login</button>
+  <div class="card">
+    <h2>🚗 Park Ease</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
 </div>
 
 <!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
+<div id="dashboard">
 
   <h1>🚗 Park Ease</h1>
 
-  <div class="card">
+  <div class="card info-card">
     <p id="count"></p>
 
-    <label>Select Duration</label><br><br>
+    <label>Select Duration</label><br>
 
     <select id="duration">
       <option value="7200">2 hours - ₹60</option>
@@ -145,21 +167,17 @@
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function() {
-
-  document.getElementById("duration").addEventListener("change", function() {
-    let value = Number(this.value);
-    let price = (value / 3600) * 30;
-    document.getElementById("price").innerText = "Price: ₹" + price;
-  });
-
+document.getElementById("duration").addEventListener("change", function() {
+  let value = Number(this.value);
+  let price = (value / 3600) * 30;
+  document.getElementById("price").innerText = "Price: ₹" + price;
 });
 
 function login() {
-  let user = document.getElementById("username").value;
-  let pass = document.getElementById("password").value;
-
-  if (user === "admin" && pass === "1234") {
+  if (
+    document.getElementById("username").value === "admin" &&
+    document.getElementById("password").value === "1234"
+  ) {
     document.getElementById("login").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
     updateCount();
@@ -176,36 +194,31 @@ function updateCount() {
 }
 
 function reserve(slot) {
-  let originalName = slot.innerText;
+  let original = slot.innerText;
   let duration = Number(document.getElementById("duration").value);
 
   if (!slot.classList.contains("reserved")) {
     slot.classList.add("reserved");
-    slot.setAttribute("data-manual", "true");
 
     let timeLeft = duration;
 
     let interval = setInterval(() => {
       timeLeft--;
 
-      let minutes = Math.floor(timeLeft / 60);
-      let seconds = timeLeft % 60;
+      let m = Math.floor(timeLeft / 60);
+      let s = timeLeft % 60;
 
-      slot.innerText = `${minutes}m ${seconds}s`;
+      slot.innerText = `${m}m ${s}s`;
 
       if (timeLeft <= 0) {
         clearInterval(interval);
         slot.classList.remove("reserved");
-        slot.removeAttribute("data-manual");
-        slot.innerText = originalName;
+        slot.innerText = original;
         updateCount();
       }
     }, 1000);
 
     updateCount();
-
-  } else {
-    alert("Already Reserved!");
   }
 }
 
@@ -213,10 +226,7 @@ function fetchData() {
   fetch("https://parkease-backend-6vpq.onrender.com/data")
     .then(res => res.json())
     .then(data => {
-
       document.querySelectorAll(".slot").forEach(slot => {
-        if (slot.getAttribute("data-manual") === "true") return;
-
         let id = slot.getAttribute("data-id");
 
         if (data[id] === 1) {
