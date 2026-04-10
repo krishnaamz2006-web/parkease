@@ -2,133 +2,125 @@
 <html>
 <head>
   <title>ParkEase</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
-    }
-
-    /* NAVBAR */
-    .navbar {
-      height: 60px;
-      display: flex;
-      align-items: center;
-      padding: 0 40px;
-      border-bottom: 1px solid #1f2937;
-      font-weight: 600;
-      font-size: 18px;
-    }
-
-    /* MAIN CONTAINER */
-    .container {
-      padding: 40px;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    h1 {
-      margin-bottom: 10px;
-      font-size: 28px;
-    }
-
-    .sub {
-      color: #9ca3af;
-      margin-bottom: 30px;
-    }
-
-    /* CARD */
-    .card {
-      background: #111827;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 30px;
-      border: 1px solid #1f2937;
-    }
-
-    select {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
       background: #020617;
       color: white;
-    }
-
-    /* GRID */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 150px);
-      gap: 20px;
-    }
-
-    /* SLOT */
-    .slot {
-      height: 140px;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 500;
-      cursor: pointer;
-      background: #16a34a;
-      transition: 0.2s;
-    }
-
-    .slot:hover {
-      transform: translateY(-2px);
-    }
-
-    .slot.reserved {
-      background: #dc2626;
-    }
-
-    /* LOGIN */
-    #login {
       display: flex;
       height: 100vh;
+      overflow: hidden;
+    }
+
+    /* LEFT SIDE (BRANDING) */
+    .left {
+      flex: 1;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+    }
+
+    .left h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+    }
+
+    .left p {
+      color: #94a3b8;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    /* RIGHT SIDE */
+    .right {
+      flex: 1;
+      display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .login-box {
-      background: #111827;
+    /* GLASS PANEL */
+    .panel {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
       padding: 30px;
-      border-radius: 12px;
-      width: 300px;
-      border: 1px solid #1f2937;
+      border-radius: 20px;
+      width: 340px;
+      box-shadow: 0 0 40px rgba(59,130,246,0.2);
     }
 
-    input {
+    input, select {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
-      background: #020617;
+      background: #0f172a;
       color: white;
     }
 
     button {
       margin-top: 15px;
       width: 100%;
-      padding: 10px;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 10px;
       border: none;
-      background: #3b82f6;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
       color: white;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     button:hover {
-      background: #2563eb;
+      transform: scale(1.05);
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 120px);
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    /* SLOT */
+    .slot {
+      height: 120px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 600;
+      background: linear-gradient(135deg, #22c55e, #15803d);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .slot:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .slot.reserved {
+      background: linear-gradient(135deg, #ef4444, #7f1d1d);
+      box-shadow: 0 0 20px rgba(239,68,68,0.6);
     }
 
     #dashboard {
       display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    #login {
+      width: 100%;
+      display: flex;
     }
 
   </style>
@@ -136,45 +128,49 @@
 
 <body>
 
-<!-- LOGIN -->
+<!-- LOGIN SCREEN -->
 <div id="login">
-  <div class="login-box">
-    <h2>ParkEase</h2>
-    <input id="username" placeholder="Username">
-    <input id="password" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+  <div class="left">
+    <h1>🚗 ParkEase</h1>
+    <p>Smart parking system that lets users reserve slots in real-time with seamless tracking and automated availability updates.</p>
+  </div>
+
+  <div class="right">
+    <div class="panel">
+      <h2>Login</h2>
+      <input id="username" placeholder="Username">
+      <input id="password" type="password" placeholder="Password">
+      <button onclick="login()">Enter Dashboard</button>
+    </div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard">
+  <div class="left">
+    <h1>Dashboard</h1>
+    <p id="count"></p>
 
-  <div class="navbar">🚗 ParkEase</div>
+    <label>Select Duration</label>
+    <select id="duration">
+      <option value="7200">2 hours - ₹60</option>
+      <option value="14400">4 hours - ₹120</option>
+    </select>
 
-  <div class="container">
-    <h1>Parking Dashboard</h1>
-    <div class="sub">Manage and reserve parking slots in real-time</div>
+    <p id="price"></p>
+  </div>
 
-    <div class="card">
-      <div id="count"></div>
+  <div class="right">
+    <div class="panel">
+      <h3>Parking Slots</h3>
 
-      <label>Select Duration</label><br>
-
-      <select id="duration">
-        <option value="7200">2 hours - ₹60</option>
-        <option value="14400">4 hours - ₹120</option>
-      </select>
-
-      <div id="price"></div>
+      <div class="grid">
+        <div class="slot" data-id="P1" onclick="reserve(this)">P1</div>
+        <div class="slot" data-id="P2" onclick="reserve(this)">P2</div>
+        <div class="slot" data-id="P3" onclick="reserve(this)">P3</div>
+        <div class="slot" data-id="P4" onclick="reserve(this)">P4</div>
+      </div>
     </div>
-
-    <div class="grid">
-      <div class="slot" data-id="P1" onclick="reserve(this)">P1</div>
-      <div class="slot" data-id="P2" onclick="reserve(this)">P2</div>
-      <div class="slot" data-id="P3" onclick="reserve(this)">P3</div>
-      <div class="slot" data-id="P4" onclick="reserve(this)">P4</div>
-    </div>
-
   </div>
 </div>
 
@@ -186,7 +182,7 @@ function login() {
     document.getElementById("password").value === "1234"
   ) {
     document.getElementById("login").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("dashboard").style.display = "flex";
     updateCount();
   }
 }
