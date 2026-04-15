@@ -10,55 +10,105 @@
       font-family: 'Inter', sans-serif;
       background: #020617;
       color: white;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
     }
 
-    /* LEFT SIDE (BRANDING) */
-    .left {
-      flex: 1;
-      padding: 60px;
+    /* NAVBAR */
+    .navbar {
+      padding: 15px 40px;
+      border-bottom: 1px solid #1f2937;
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .container {
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .sub {
+      color: #94a3b8;
+      margin-bottom: 30px;
+    }
+
+    /* CARD */
+    .card {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    select {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: #0f172a;
+      color: white;
+    }
+
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 150px);
+      gap: 20px;
+      justify-content: center;
+    }
+
+    /* SLOT */
+    .slot {
+      height: 140px;
+      border-radius: 15px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: radial-gradient(circle at top, #0f172a, #020617);
+      align-items: center;
+      font-weight: 500;
+      cursor: pointer;
+      background: #16a34a;
+      transition: 0.25s;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
     }
 
-    .left h1 {
-      font-size: 42px;
-      margin-bottom: 20px;
+    .slot:hover {
+      transform: translateY(-4px);
     }
 
-    .left p {
-      color: #94a3b8;
-      max-width: 400px;
-      line-height: 1.6;
+    .slot.reserved {
+      background: #dc2626;
     }
 
-    /* RIGHT SIDE */
-    .right {
-      flex: 1;
+    .timer {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* LOGIN */
+    #login {
       display: flex;
+      height: 100vh;
       justify-content: center;
       align-items: center;
     }
 
-    /* GLASS PANEL */
-    .panel {
+    .login-box {
       background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(20px);
       padding: 30px;
-      border-radius: 20px;
-      width: 340px;
-      box-shadow: 0 0 40px rgba(59,130,246,0.2);
+      border-radius: 15px;
+      width: 300px;
     }
 
-    input, select {
+    input {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      border-radius: 10px;
+      border-radius: 8px;
       border: none;
       background: #0f172a;
       color: white;
@@ -67,60 +117,38 @@
     button {
       margin-top: 15px;
       width: 100%;
-      padding: 12px;
-      border-radius: 10px;
+      padding: 10px;
+      border-radius: 8px;
       border: none;
-      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      background: #3b82f6;
       color: white;
       cursor: pointer;
-      transition: 0.3s;
     }
 
     button:hover {
-      transform: scale(1.05);
-    }
-
-    /* GRID */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 120px);
-      gap: 20px;
-      justify-content: center;
-      margin-top: 30px;
-    }
-
-    /* SLOT */
-    .slot {
-      height: 120px;
-      border-radius: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 600;
-      background: linear-gradient(135deg, #22c55e, #15803d);
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .slot:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .slot.reserved {
-      background: linear-gradient(135deg, #ef4444, #7f1d1d);
-      box-shadow: 0 0 20px rgba(239,68,68,0.6);
+      background: #2563eb;
     }
 
     #dashboard {
       display: none;
-      width: 100%;
-      height: 100%;
     }
 
-    #login {
-      width: 100%;
-      display: flex;
+    /* TOAST */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #22c55e;
+      padding: 12px 18px;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: 0.4s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
   </style>
@@ -128,51 +156,47 @@
 
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="login">
-  <div class="left">
-    <h1>🚗 ParkEase</h1>
-    <p>Smart parking system that lets users reserve slots in real-time with seamless tracking and automated availability updates.</p>
-  </div>
-
-  <div class="right">
-    <div class="panel">
-      <h2>Login</h2>
-      <input id="username" placeholder="Username">
-      <input id="password" type="password" placeholder="Password">
-      <button onclick="login()">Enter Dashboard</button>
-    </div>
+  <div class="login-box">
+    <h2>ParkEase</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard">
-  <div class="left">
-    <h1>Dashboard</h1>
-    <p id="count"></p>
+  <div class="navbar">🚗 ParkEase</div>
 
-    <label>Select Duration</label>
-    <select id="duration">
-      <option value="7200">2 hours - ₹60</option>
-      <option value="14400">4 hours - ₹120</option>
-    </select>
+  <div class="container">
+    <h1>Parking Dashboard</h1>
+    <div class="sub">Reserve and manage slots in real-time</div>
 
-    <p id="price"></p>
-  </div>
+    <div class="card">
+      <div id="count"></div>
 
-  <div class="right">
-    <div class="panel">
-      <h3>Parking Slots</h3>
+      <label>Select Duration</label><br>
 
-      <div class="grid">
-        <div class="slot" data-id="P1" onclick="reserve(this)">P1</div>
-        <div class="slot" data-id="P2" onclick="reserve(this)">P2</div>
-        <div class="slot" data-id="P3" onclick="reserve(this)">P3</div>
-        <div class="slot" data-id="P4" onclick="reserve(this)">P4</div>
-      </div>
+      <select id="duration">
+        <option value="7200">2 hours - ₹60</option>
+        <option value="14400">4 hours - ₹120</option>
+      </select>
+
+      <div id="price"></div>
+    </div>
+
+    <div class="grid">
+      <div class="slot" data-id="P1" onclick="reserve(this)">P1</div>
+      <div class="slot" data-id="P2" onclick="reserve(this)">P2</div>
+      <div class="slot" data-id="P3" onclick="reserve(this)">P3</div>
+      <div class="slot" data-id="P4" onclick="reserve(this)">P4</div>
     </div>
   </div>
 </div>
+
+<div id="toast" class="toast"></div>
 
 <script>
 
@@ -185,18 +209,18 @@ function login() {
     document.getElementById("password").value === "1234"
   ) {
     document.getElementById("login").style.display = "none";
-    document.getElementById("dashboard").style.display = "flex";
+    document.getElementById("dashboard").style.display = "block";
     updateCount();
   }
 }
 
-// PRICE UPDATE
+// PRICE
 document.getElementById("duration").addEventListener("change", function () {
   let price = (this.value / 3600) * 30;
   document.getElementById("price").innerText = "Price: ₹" + price;
 });
 
-// UPDATE SLOT COUNT
+// COUNT
 function updateCount() {
   let total = document.querySelectorAll('.slot').length;
   let reserved = document.querySelectorAll('.reserved').length;
@@ -204,56 +228,63 @@ function updateCount() {
     "Available Slots: " + (total - reserved);
 }
 
-// RESERVE SLOT
+// TOAST
+function showToast(msg) {
+  let toast = document.getElementById("toast");
+  toast.innerText = msg;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
+}
+
+// RESERVE
 function reserve(slot) {
 
   let id = slot.dataset.id;
 
-  // already reserved
   if (slot.classList.contains("reserved")) return;
 
   let duration = parseInt(document.getElementById("duration").value);
 
   slot.classList.add("reserved");
 
-  let endTime = Date.now() + duration;
+  let timerDiv = document.createElement("div");
+  timerDiv.className = "timer";
+  slot.appendChild(timerDiv);
 
-  slotTimers[id] = endTime;
+  let endTime = Date.now() + duration * 1000;
 
-  startTimer(slot, id);
+  slotTimers[id] = { end: endTime, element: timerDiv };
+
+  showToast("Slot " + id + " booked");
 
   updateCount();
-}
-
-// TIMER FUNCTION
-function startTimer(slot, id) {
-
-  let timerText = document.createElement("div");
-  timerText.style.fontSize = "14px";
-  timerText.style.marginTop = "5px";
-  slot.appendChild(timerText);
 
   let interval = setInterval(() => {
 
-    let remaining = slotTimers[id] - Date.now();
+    let remaining = endTime - Date.now();
 
     if (remaining <= 0) {
       clearInterval(interval);
       slot.classList.remove("reserved");
-      timerText.remove();
+      timerDiv.remove();
+      delete slotTimers[id];
       updateCount();
       return;
     }
 
-    let mins = Math.floor(remaining / 60000);
-    let secs = Math.floor((remaining % 60000) / 1000);
+    let h = Math.floor(remaining / (1000 * 60 * 60));
+    let m = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    let s = Math.floor((remaining % (1000 * 60)) / 1000);
 
-    timerText.innerText = `${mins}m ${secs}s`;
+    timerDiv.innerText = `${h}h ${m}m ${s}s`;
 
   }, 1000);
 }
 
-// FETCH FROM BACKEND
+// BACKEND SYNC
 function fetchData() {
   fetch("https://parkease-backend-6vpq.onrender.com/data")
     .then(res => res.json())
@@ -261,7 +292,6 @@ function fetchData() {
       document.querySelectorAll(".slot").forEach(slot => {
         let id = slot.dataset.id;
 
-        // only update if not manually reserved
         if (!slotTimers[id]) {
           if (data[id] === 1) slot.classList.add("reserved");
           else slot.classList.remove("reserved");
