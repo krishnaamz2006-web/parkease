@@ -176,6 +176,9 @@
 
 <script>
 
+let slotTimers = {};
+
+// LOGIN
 function login() {
   if (
     document.getElementById("username").value === "admin" &&
@@ -187,11 +190,13 @@ function login() {
   }
 }
 
+// PRICE UPDATE
 document.getElementById("duration").addEventListener("change", function () {
   let price = (this.value / 3600) * 30;
   document.getElementById("price").innerText = "Price: ₹" + price;
 });
 
+// UPDATE SLOT COUNT
 function updateCount() {
   let total = document.querySelectorAll('.slot').length;
   let reserved = document.querySelectorAll('.reserved').length;
@@ -199,27 +204,75 @@ function updateCount() {
     "Available Slots: " + (total - reserved);
 }
 
+// RESERVE SLOT
 function reserve(slot) {
-  if (!slot.classList.contains("reserved")) {
-    slot.classList.add("reserved");
-    updateCount();
-  }
+
+  let id = slot.dataset.id;
+
+  // already reserved
+  if (slot.classList.contains("reserved")) return;
+
+  let duration = parseInt(document.getElementById("duration").value);
+
+  slot.classList.add("reserved");
+
+  let endTime = Date.now() + duration;
+
+  slotTimers[id] = endTime;
+
+  startTimer(slot, id);
+
+  updateCount();
 }
 
+// TIMER FUNCTION
+function startTimer(slot, id) {
+
+  let timerText = document.createElement("div");
+  timerText.style.fontSize = "14px";
+  timerText.style.marginTop = "5px";
+  slot.appendChild(timerText);
+
+  let interval = setInterval(() => {
+
+    let remaining = slotTimers[id] - Date.now();
+
+    if (remaining <= 0) {
+      clearInterval(interval);
+      slot.classList.remove("reserved");
+      timerText.remove();
+      updateCount();
+      return;
+    }
+
+    let mins = Math.floor(remaining / 60000);
+    let secs = Math.floor((remaining % 60000) / 1000);
+
+    timerText.innerText = `${mins}m ${secs}s`;
+
+  }, 1000);
+}
+
+// FETCH FROM BACKEND
 function fetchData() {
   fetch("https://parkease-backend-6vpq.onrender.com/data")
     .then(res => res.json())
     .then(data => {
       document.querySelectorAll(".slot").forEach(slot => {
         let id = slot.dataset.id;
-        if (data[id] === 1) slot.classList.add("reserved");
-        else slot.classList.remove("reserved");
+
+        // only update if not manually reserved
+        if (!slotTimers[id]) {
+          if (data[id] === 1) slot.classList.add("reserved");
+          else slot.classList.remove("reserved");
+        }
       });
+
       updateCount();
     });
 }
 
-setInterval(fetchData, 2000);
+setInterval(fetchData, 3000);
 
 </script>
 
